@@ -1,6 +1,6 @@
 <script>
   export let title = "";
-  /** rows: Array<{ player:number, att:number, scores:number, pct:number, g:number, p:number, two:number, w:number, s:number, b:number }> */
+    /** rows: Array<{ player:number, att:number, scores?:number, score?:number, pct?:number, g?:number, p?:number, two?:number, t2?:number, w?:number, wide?:number, s?:number, short?:number, b?:number, blocked?:number }> */
   export let rows = [];
   export let limit = 10;   // show Top-N by default
 
@@ -35,17 +35,17 @@
           <tr>
             <td class="label">{r.player === 0 ? 'TBC' : `#${r.player}`}</td>
             <td class="num">{r.att}</td>
-            <td class="num">{r.scores}</td>
-            <td class="num">{r.pct}%</td>
+            <td class="num">{r.scores ?? r.score}</td>
+            <td class="num">{r.pct ?? (r.att ? Math.round(((r.scores ?? r.score ?? 0) / r.att) * 100) : 0)}%</td>
           </tr>
           <tr class="breakdown">
             <td colspan="4">
-              <span>G:{r.g}</span>
-              <span>P:{r.p}</span>
-              <span>2P:{r.two}</span>
-              <span>W:{r.w}</span>
-              <span>S:{r.s}</span>
-              <span>B:{r.b}</span>
+            <span>G:{r.g ?? 0}</span>
+              <span>P:{r.p ?? 0}</span>
+              <span>2P:{r.two ?? r.t2 ?? 0}</span>
+              <span>W:{r.w ?? r.wide ?? 0}</span>
+              <span>S:{r.s ?? r.short ?? 0}</span>
+              <span>B:{r.b ?? r.blocked ?? 0}</span>  
             </td>
           </tr>
         {/each}
