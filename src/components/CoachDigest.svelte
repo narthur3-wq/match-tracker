@@ -408,11 +408,11 @@
       <div class="block">
        <div class="block-h">Turnovers — H1 / H2 / Total (Win/Loss)</div> 
         <table class="turns">
-          <thead><tr><th></th><th>Win</th><th>Loss</th><th>%</th><th>F</th><th>U</th></tr></thead>
+        <thead><tr><th></th><th>Win</th><th class="loss">Loss</th><th>%</th><th>F</th><th>U</th></tr></thead>  
           <tbody>
-            <tr><td>H1</td><td>{toTable.h1.gain}</td><td>{toTable.h1.loss}</td><td>{toTable.h1.pct}%</td><td>{toTable.h1.forced}</td><td>{toTable.h1.unforced}</td></tr>
-            <tr><td>H2</td><td>{toTable.h2.gain}</td><td>{toTable.h2.loss}</td><td>{toTable.h2.pct}%</td><td>{toTable.h2.forced}</td><td>{toTable.h2.unforced}</td></tr>
-            <tr class="total"><td>Total</td><td>{toTable.total.gain}</td><td>{toTable.total.loss}</td><td>{toTable.total.pct}%</td><td>{toTable.total.forced}</td><td>{toTable.total.unforced}</td></tr>
+                      <tr><td>H1</td><td>{toTable.h1.gain}</td><td class="loss">{toTable.h1.loss}</td><td>{toTable.h1.pct}%</td><td>{toTable.h1.forced}</td><td>{toTable.h1.unforced}</td></tr>
+            <tr><td>H2</td><td>{toTable.h2.gain}</td><td class="loss">{toTable.h2.loss}</td><td>{toTable.h2.pct}%</td><td>{toTable.h2.forced}</td><td>{toTable.h2.unforced}</td></tr>
+            <tr class="total"><td>Total</td><td>{toTable.total.gain}</td><td class="loss">{toTable.total.loss}</td><td>{toTable.total.pct}%</td><td>{toTable.total.forced}</td><td>{toTable.total.unforced}</td></tr> 
           </tbody>
         </table>
         <div class="small neutral">F/U counts among losses</div>
@@ -501,10 +501,11 @@
   table.mini{ width:100%; border-collapse:separate; border-spacing:0; }
   table.mini th, table.mini td{ padding:6px 8px; text-align:center; }
   table.mini th:first-child, table.mini td:first-child{ text-align:left; }
-  table.turns{ width:100%; border-collapse:separate; border-spacing:0; }
-  table.turns th, table.turns td{ padding:8px 10px; text-align:center; }
-  table.turns th:first-child, table.turns td:first-child{ text-align:left; }
-  .total td{ font-weight:900; }
+      table.turns{ width:100%; border-collapse:separate; border-spacing:0; }
+    table.turns th, table.turns td{ padding:8px 10px; text-align:center; }
+    table.turns th:first-child, table.turns td:first-child{ text-align:left; }
+    table.turns .loss{ color:var(--loss); }
+    .total td{ font-weight:900; }
 
   .small{ font-size:12px; }
   .notes{ margin:0; padding-left:18px; }
