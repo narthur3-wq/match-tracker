@@ -123,8 +123,16 @@
       ]}
     />
 
-    <Legend title="Legend" showTeam={true} showOutcome={true} showContest={false} showCause={false} dense />
-
+      <Legend
+      title="Legend"
+      showTeam={true}
+      showOutcome={true}
+      outcomeMode="score"
+      showContest={false}
+      showCause={false}
+      showShots={true}
+      dense
+    />
     <div class="mini-sum">
       <div>
         <div class="mini-title">Us</div>
