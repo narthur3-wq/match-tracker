@@ -51,7 +51,9 @@
         dataColor,
         label,
         shape,
-        savedOrientationLeft: e.savedOrientationLeft
+        savedOrientationLeft: e.side === 'us'
+          ? e.savedOrientationLeft
+          : !e.savedOrientationLeft
       };
     });
 
