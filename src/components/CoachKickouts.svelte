@@ -20,9 +20,26 @@
 
   // our-POV outcome key
   function ourOutcomeKey(e){
-    return e.winner_team === 'us' ? 'won'
-         : e.winner_team === 'opp' ? 'lost'
-         : 'neutral';
+     if (e && e.winner_team) {
+      return e.winner_team === 'us' ? 'won'
+           : e.winner_team === 'opp' ? 'lost'
+           : 'neutral';
+    }
+    // Fallback to the kicker's outcome
+    const o = e?.outcome;
+    const side = e?.side;
+    if (!o || !side) return 'neutral';
+    if (side === 'us') {
+      return o === 'won' ? 'won'
+           : o === 'lost' ? 'lost'
+           : 'neutral';
+    }
+    if (side === 'opp') {
+      return o === 'won' ? 'lost'
+           : o === 'lost' ? 'won'
+           : 'neutral';
+    }
+    return 'neutral';
   }
 
   // -------- filter predicate (explicit deps so Svelte re-runs) --------
@@ -65,8 +82,9 @@
     let wins = 0, losses = 0;
     const byContest = { clean:0, break:0, foul:0, sideline:0 };
     for (const r of rows) {
-      if (r.winner_team === 'us') wins++;
-      else if (r.winner_team === 'opp') losses++;
+           const ok = ourOutcomeKey(r);
+      if (ok === 'won') wins++;
+      else if (ok === 'lost') losses++;
       byContest[r.contest || 'clean']++;
     }
     const denom = wins + losses; // neutrals excluded
@@ -85,7 +103,10 @@ function groupByPlayer(side, koThisHalf, teamFilter, outcomes, contests) {
       const p = Number.isFinite(e.player) ? e.player : 0;
       const curr = map.get(p) || { player: p, att: 0, wins: 0 };
       curr.att += 1;
-      if (e.outcome === 'won') curr.wins += 1;
+           const kickerWon = e.outcome
+        ? e.outcome === 'won'
+        : (e.winner_team && e.winner_team === e.side);
+      if (kickerWon) curr.wins += 1;
       map.set(p, curr);
     }
     return [...map.values()].sort(
@@ -128,8 +149,9 @@ function groupByPlayer(side, koThisHalf, teamFilter, outcomes, contests) {
       );
       const cell = m[z.key];
       cell.att += 1;
-      if (e.winner_team === 'us') cell.wins += 1;
-      else if (e.winner_team === 'opp') cell.losses += 1;
+      const ok = ourOutcomeKey(e);
+      if (ok === 'won') cell.wins += 1;
+      else if (ok === 'lost') cell.losses += 1;
     }
     return m;
   }
