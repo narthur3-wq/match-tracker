@@ -30,7 +30,7 @@
         <tr>
           <th></th>
           <th>WIN</th>
-          <th>Loss</th>
+         <th class="loss">Loss</th> 
           <th>%</th>
           <th>F</th>
           <th>U</th>
@@ -40,7 +40,7 @@
         <tr>
           <th>H1</th>
           <td>{h1.gain}</td>
-          <td>{h1.loss}</td>
+          <td class="loss">{h1.loss}</td>
           <td>{h1.rate}%</td>
           <td>{h1.forced}</td>
           <td>{h1.unforced}</td>
@@ -48,7 +48,7 @@
         <tr>
           <th>H2</th>
           <td>{h2.gain}</td>
-          <td>{h2.loss}</td>
+          <td class="loss">{h2.loss}</td>
           <td>{h2.rate}%</td>
           <td>{h2.forced}</td>
           <td>{h2.unforced}</td>
@@ -58,7 +58,7 @@
         <tr>
           <th>Total</th>
           <td><strong>{total.gain}</strong></td>
-          <td><strong>{total.loss}</strong></td>
+          <td class="loss"><strong>{total.loss}</strong></td>
           <td><strong>{total.rate}%</strong></td>
           <td><strong>{total.forced}</strong></td>
           <td><strong>{total.unforced}</strong></td>
@@ -86,4 +86,5 @@
   table.t.numcol th:first-child, table.t.numcol td:first-child { text-align: left; }
 
   .note { margin-top: 10px; color: #6b7280; }
+ table.t .loss { color: var(--loss); }
 </style>
