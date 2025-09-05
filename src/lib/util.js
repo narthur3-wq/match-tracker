@@ -35,13 +35,11 @@ export function classifyKickoutZone(nx, ny, savedLeft, currentLeft){
     // ✅ Normalize capture to "attack →" frame.
   if (savedLeft === true){
     cx = 1 - cx;
-    cy = 1 - cy;
   }
 
  // ✅ Apply current orientation independently of how it was saved.
   if (currentLeft === true){
     cx = 1 - cx;
-    cy = 1 - cy;
   }
 
   const key = zoneFromCanonical(cx, cy);
