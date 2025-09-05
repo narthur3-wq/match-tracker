@@ -58,8 +58,10 @@
     });
 
   // -------- Sidebar tallies (our-POV) --------
-  function tallyByKickingSide(side, teamFilter, outcomes, contests) {
-    const rows = koThisHalf.filter((e) => e.side === side).filter(e => keepByFilters(e, teamFilter, outcomes, contests));
+   function tallyByKickingSide(side, koThisHalf, teamFilter, outcomes, contests) {
+    const rows = koThisHalf
+      .filter((e) => e.side === side)
+      .filter((e) => keepByFilters(e, teamFilter, outcomes, contests));
     let wins = 0, losses = 0;
     const byContest = { clean:0, break:0, foul:0, sideline:0 };
     for (const r of rows) {
@@ -71,11 +73,11 @@
     const pct = denom ? Math.round((wins / denom) * 100) : 0;
     return { total: rows.length, wins, losses, pct, byContest };
   }
-  $: usTally  = tallyByKickingSide('us',  teamFilter, outcomes, contests);
-  $: oppTally = tallyByKickingSide('opp', teamFilter, outcomes, contests);
+    $: usTally  = tallyByKickingSide('us', koThisHalf, teamFilter, outcomes, contests);
+  $: oppTally = tallyByKickingSide('opp', koThisHalf, teamFilter, outcomes, contests);
 
   // -------- Per-player tables (receiver wins for the *kicking* side) --------
-  function groupByPlayer(side, teamFilter, outcomes, contests) {
+function groupByPlayer(side, koThisHalf, teamFilter, outcomes, contests) {
     const map = new Map();
     for (const e of koThisHalf) {
       if (e.side !== side) continue;
@@ -90,8 +92,8 @@
       (a, b) => b.att - a.att || b.wins - a.wins || a.player - b.player
     );
   }
-  $: usRows  = groupByPlayer('us',  teamFilter, outcomes, contests);
-  $: oppRows = groupByPlayer('opp', teamFilter, outcomes, contests);
+    $: usRows  = groupByPlayer('us', koThisHalf, teamFilter, outcomes, contests);
+  $: oppRows = groupByPlayer('opp', koThisHalf, teamFilter, outcomes, contests);
 
   const pct = (n) => (Number.isFinite(n) ? `${n}%` : '—');
 
@@ -114,9 +116,11 @@
     return m;
   }
 
-  function zoneMatrix(kickingSide, teamFilter, outcomes, contests) {
+   function zoneMatrix(kickingSide, koThisHalf, teamFilter, outcomes, contests) {
     const m = emptyMatrix();
-    const rows = koThisHalf.filter(e => e.side === kickingSide).filter(e => keepForZones(e, outcomes, contests));
+        const rows = koThisHalf
+      .filter((e) => e.side === kickingSide)
+      .filter((e) => keepForZones(e, outcomes, contests));
     for (const e of rows) {
       // ✅ zones relative to the kicker’s direction
       const z = classifyKickoutZoneForSide(
@@ -130,8 +134,8 @@
     return m;
   }
 
-  $: usZones  = zoneMatrix('us',  teamFilter, outcomes, contests);
-  $: oppZones = zoneMatrix('opp', teamFilter, outcomes, contests);
+    $: usZones  = zoneMatrix('us', koThisHalf, teamFilter, outcomes, contests);
+  $: oppZones = zoneMatrix('opp', koThisHalf, teamFilter, outcomes, contests);
 </script>
 
 <div class="ko-grid">
