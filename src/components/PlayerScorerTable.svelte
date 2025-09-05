@@ -32,20 +32,23 @@
         <tr class="empty"><td colspan="4">No shots yet</td></tr>
       {:else}
         {#each visible as r (r.player)}
+          {@const att = Number(r.att) || 0}
+          {@const scores = Number(r.scores ?? r.score) || 0}
+          {@const pct = Number(r.pct) || (att ? Math.round((scores / att) * 100) : 0)}
           <tr>
             <td class="label">{r.player === 0 ? 'TBC' : `#${r.player}`}</td>
-            <td class="num">{r.att}</td>
-            <td class="num">{r.scores ?? r.score}</td>
-            <td class="num">{r.pct ?? (r.att ? Math.round(((r.scores ?? r.score ?? 0) / r.att) * 100) : 0)}%</td>
+                        <td class="num">{att}</td>
+            <td class="num">{scores}</td>
+            <td class="num">{pct}%</td>
           </tr>
           <tr class="breakdown">
             <td colspan="4">
-            <span>G:{r.g ?? 0}</span>
-              <span>P:{r.p ?? 0}</span>
-              <span>2P:{r.two ?? r.t2 ?? 0}</span>
-              <span>W:{r.w ?? r.wide ?? 0}</span>
-              <span>S:{r.s ?? r.short ?? 0}</span>
-              <span>B:{r.b ?? r.blocked ?? 0}</span>  
+                          <span>G:{Number(r.g) || 0}</span>
+              <span>P:{Number(r.p) || 0}</span>
+              <span>2P:{Number(r.two ?? r.t2) || 0}</span>
+              <span>W:{Number(r.w ?? r.wide) || 0}</span>
+              <span>S:{Number(r.s ?? r.short) || 0}</span>
+              <span>B:{Number(r.b ?? r.blocked) || 0}</span>
             </td>
           </tr>
         {/each}
