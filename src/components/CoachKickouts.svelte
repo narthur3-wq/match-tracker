@@ -3,7 +3,7 @@
   import PlayerKickoutTable from './PlayerKickoutTable.svelte';
   import Legend from './Legend.svelte';
   import TogglePills from './TogglePills.svelte';
-  import { events as pending, half, orientation_left } from '$lib/stores.js';
+  import { events as pending, half } from '$lib/stores.js';
   import { classifyKickoutZoneForSide } from '$lib/util.js';
 
   // -------- Filters (local UI state) --------
@@ -146,9 +146,9 @@ function groupByPlayer(side, koThisHalf, teamFilter, outcomes, contests) {
     for (const L of LENGTHS) for (const R of LATERALS) m[`${L}-${R}`] = { att:0, wins:0, losses:0 };
     return m;
   }
-    function zoneMatrix(kickingSide, koThisHalf, teamFilter, outcomes, contests, currentLeft) {
+    function zoneMatrix(kickingSide, koThisHalf, teamFilter, outcomes, contests) {
     const m = emptyMatrix();
-           const rows = koThisHalf
+     const rows = koThisHalf
       .filter((e) => e.side === kickingSide)
       .filter((e) => keepForZones(e, outcomes, contests));
     for (const e of rows) {
@@ -158,18 +158,17 @@ function groupByPlayer(side, koThisHalf, teamFilter, outcomes, contests) {
         e.ny,
         e.side,
         e.savedOrientationLeft,
-        currentLeft 
+        e.savedOrientationLeft // use capture orientation
       );
       const cell = m[z.key];
       cell.att += 1;
-      const ok = ourOutcomeKey(e);
-      if (ok === 'won') cell.wins += 1;
-      else if (ok === 'lost') cell.losses += 1;
+      if (e.winner_team === 'us') cell.wins += 1;
+      else if (e.winner_team === 'opp') cell.losses += 1;
     }
     return m;
   }
-  $: usZones  = zoneMatrix('us', koThisHalf, teamFilter, outcomes, contests, $orientation_left);
-  $: oppZones = zoneMatrix('opp', koThisHalf, teamFilter, outcomes, contests, $orientation_left);
+   $: usZones  = zoneMatrix('us',  koThisHalf, teamFilter, outcomes, contests);
+  $: oppZones = zoneMatrix('opp', koThisHalf, teamFilter, outcomes, contests);
 </script>
 
 <div class="ko-grid">
