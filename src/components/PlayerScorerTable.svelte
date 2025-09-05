@@ -43,7 +43,7 @@
           {@const w = Number(r.w ?? r.wide) || 0}
           {@const s = Number(r.s ?? r.short) || 0}
           {@const b = Number(r.b ?? r.blocked) || 0}
-          </tr>
+          <tr>
             <td class="label">{r.player === 0 ? 'TBC' : `#${r.player}`}</td>
             <td class="num">{att}</td>
             <td class="num">{scores}</td>
