@@ -123,6 +123,16 @@ function groupByPlayer(side, koThisHalf, teamFilter, outcomes, contests) {
   const LATERALS = ['left','centre','right'];
   function pctNum(n, d){ return d ? Math.round((n/d)*100) : 0; }
 
+  function winPct(cell){
+    const d = cell.wins + cell.losses;
+    return d ? Math.round((cell.wins / d) * 100) : 0;
+  }
+
+  function lossPct(cell){
+    const d = cell.wins + cell.losses;
+    return d ? Math.round((cell.losses / d) * 100) : 0;
+  }
+
   function keepForZones(e, outcomes, contests) {
     const ok = ourOutcomeKey(e);
     if (!(ok in outcomes) || !outcomes[ok]) return false;
@@ -136,16 +146,19 @@ function groupByPlayer(side, koThisHalf, teamFilter, outcomes, contests) {
     for (const L of LENGTHS) for (const R of LATERALS) m[`${L}-${R}`] = { att:0, wins:0, losses:0 };
     return m;
   }
-
-   function zoneMatrix(kickingSide, koThisHalf, teamFilter, outcomes, contests) {
+    function zoneMatrix(kickingSide, koThisHalf, teamFilter, outcomes, contests, currentLeft) {
     const m = emptyMatrix();
-        const rows = koThisHalf
+           const rows = koThisHalf
       .filter((e) => e.side === kickingSide)
       .filter((e) => keepForZones(e, outcomes, contests));
     for (const e of rows) {
       // ✅ zones relative to the kicker’s direction
       const z = classifyKickoutZoneForSide(
-       e.nx, e.ny, e.side, e.savedOrientationLeft, e.savedOrientationLeft
+        e.nx,
+        e.ny,
+        e.side,
+        e.savedOrientationLeft,
+        currentLeft 
       );
       const cell = m[z.key];
       cell.att += 1;
@@ -155,9 +168,8 @@ function groupByPlayer(side, koThisHalf, teamFilter, outcomes, contests) {
     }
     return m;
   }
-
-    $: usZones  = zoneMatrix('us', koThisHalf, teamFilter, outcomes, contests);
-  $: oppZones = zoneMatrix('opp', koThisHalf, teamFilter, outcomes, contests);
+  $: usZones  = zoneMatrix('us', koThisHalf, teamFilter, outcomes, contests, $orientation_left);
+  $: oppZones = zoneMatrix('opp', koThisHalf, teamFilter, outcomes, contests, $orientation_left);
 </script>
 
 <div class="ko-grid">
@@ -226,8 +238,8 @@ function groupByPlayer(side, koThisHalf, teamFilter, outcomes, contests) {
           <div class="zcell">
             <div class="att">{usZones[`${L}-${R}`].att} att</div>
             <div class="bar">
-              <span style="width:{(() => {
-                const c = usZones[`${L}-${R}`]; const d = c.wins + c.losses; return d ? Math.round((c.wins/d)*100) : 0;
+              <span class="w" style="width:{winPct(usZones[`${L}-${R}`])}%"></span>
+              <span class="l" style="width:{lossPct(usZones[`${L}-${R}`])}%"></span>
               })()}%"></span>
             </div>
             <div class="wl">
@@ -293,9 +305,11 @@ function groupByPlayer(side, koThisHalf, teamFilter, outcomes, contests) {
   .rowhead { text-align:left; padding-top:6px; }
   .zcell { border:1px solid #e6ebf1; border-radius:10px; padding:8px; display:grid; gap:6px; }
   .zcell .att { font-weight:700; font-size:13px; }
-  .bar { height:10px; background:#e5e7eb; border-radius:999px; overflow:hidden; }
-  .bar span { display:block; height:100%; background:#16a34a; }
+    .bar { display:flex; height:10px; background:#e5e7eb; border-radius:999px; overflow:hidden; }
+  .bar span { display:block; height:100%; }
+  .bar span.w { background:var(--win); }
+  .bar span.l { background:var(--loss); }
   .wl { display:flex; justify-content:space-between; font-size:12px; }
-  .wl .w { color:#16a34a; }
-  .wl .l { color:#dc2626; }
+  .wl .w { color:var(--win); }
+  .wl .l { color:var(--loss); }
 </style>
