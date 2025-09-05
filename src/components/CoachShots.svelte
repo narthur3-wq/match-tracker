@@ -36,11 +36,17 @@
   $: marks = shotsThisHalf
     .filter(e => keepByFilters(e, teamFilter, outcomes, sourceFilter))
     .map(e => {
-      const cls   = `shot ${e.outcome || ''}`;
-      const label = e.outcome === 'two' ? '2' : '';
-      const shape = e.side === 'opp' ? 'diamond' : null;
+           const label = e.outcome === 'two' ? '2' : '';
+           const shape = e.outcome === 'two' ? 'twoPt' : e.outcome;
+      const dataColor = successSet.has(e.outcome) ? 'score' : 'miss';
       return {
-        x: e.nx, y: e.ny, class: cls, label, shape,
+       x: e.nx,
+        y: e.ny,
+        class: 'shot',
+        label,
+        shape,
+        dataColor,
+        team: e.side,
         savedOrientationLeft: e.savedOrientationLeft
       };
     });
