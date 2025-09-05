@@ -72,19 +72,22 @@
     const map = new Map();
     for (const r of rows) {
       const p = Number.isFinite(r.player) ? r.player : 0;
-      const rec = map.get(p) || { player:p, g:0, p:0, t2:0, wide:0, short:0, blocked:0, att:0, scores:0 };
+     const rec = map.get(p) || { player:p, g:0, p:0, two:0, w:0, s:0, b:0, att:0, scores:0 };
       rec.att++;
       if      (r.outcome === 'goal')    { rec.g++;  rec.scores++; }
       else if (r.outcome === 'point')   { rec.p++;  rec.scores++; }
-      else if (r.outcome === 'two')     { rec.t2++; rec.scores++; }
-      else if (r.outcome === 'wide')    rec.wide++;
-      else if (r.outcome === 'short')   rec.short++;
-      else if (r.outcome === 'blocked') rec.blocked++;
+           else if (r.outcome === 'two')     { rec.two++; rec.scores++; }
+      else if (r.outcome === 'wide')    rec.w++;
+      else if (r.outcome === 'short')   rec.s++;
+      else if (r.outcome === 'blocked') rec.b++;
       map.set(p, rec);
+    }
+    for (const rec of map.values()) {
+      rec.pct = rec.att ? Math.round((rec.scores / rec.att) * 100) : 0;
     }
     const arr = [...map.values()];
     arr.sort((a,b) =>
-      b.scores - a.scores || b.g - a.g || b.p - a.p || b.t2 - a.t2 || b.att - a.att || a.player - b.player
+          b.scores - a.scores || b.g - a.g || b.p - a.p || b.two - a.two || b.att - a.att || a.player - b.player
     );
     return arr;
   }
