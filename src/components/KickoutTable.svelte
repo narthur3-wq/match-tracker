@@ -8,7 +8,7 @@
       <th style="text-align:left;padding:8px">Player</th>
       <th style="text-align:right;padding:8px">Att</th>
       <th style="text-align:right;padding:8px">Won</th>
-      <th style="text-align:right;padding:8px">Lost</th>
+     <th class="loss" style="text-align:right;padding:8px">Lost</th>
       <th style="text-align:right;padding:8px">Win %</th>
     </tr>
   </thead>
@@ -18,7 +18,7 @@
         <td style="padding:8px">#{r.player || '—'}</td>
         <td style="padding:8px;text-align:right">{r.att}</td>
         <td style="padding:8px;text-align:right">{r.won}</td>
-        <td style="padding:8px;text-align:right">{r.lost}</td>
+        <td class="loss" style="padding:8px;text-align:right">{r.lost}</td>  
         <td style="padding:8px;text-align:right">{r.winPct}%</td>
       </tr>
     {/each}
@@ -27,3 +27,7 @@
     {/if}
   </tbody>
 </table>
+
+<style>
+  .loss { color: var(--loss); }
+</style>
