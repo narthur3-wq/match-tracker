@@ -238,10 +238,9 @@ function groupByPlayer(side, koThisHalf, teamFilter, outcomes, contests) {
           <div class="zcell">
             <div class="att">{usZones[`${L}-${R}`].att} att</div>
             <div class="bar">
-              <span class="w" style="width:{winPct(usZones[`${L}-${R}`])}%"></span>
-              <span class="l" style="width:{lossPct(usZones[`${L}-${R}`])}%"></span>
-              })()}%"></span>
-            </div>
+                  <span class="w" style="width:{winPct(usZones[`${L}-${R}`])}%"></span>
+                <span class="l" style="width:{lossPct(usZones[`${L}-${R}`])}%"></span>
+              </div>
             <div class="wl">
               <span class="w">{usZones[`${L}-${R}`].wins} W</span>
               <span class="l">{usZones[`${L}-${R}`].losses} L</span>
@@ -264,11 +263,10 @@ function groupByPlayer(side, koThisHalf, teamFilter, outcomes, contests) {
         {#each ['left','centre','right'] as R}
           <div class="zcell">
             <div class="att">{oppZones[`${L}-${R}`].att} att</div>
-            <div class="bar">
-              <span style="width:{(() => {
-                const c = oppZones[`${L}-${R}`]; const d = c.wins + c.losses; return d ? Math.round((c.wins/d)*100) : 0;
-              })()}%"></span>
-            </div>
+                         <div class="bar">
+                <span class="w" style="width:{winPct(oppZones[`${L}-${R}`])}%"></span>
+                <span class="l" style="width:{lossPct(oppZones[`${L}-${R}`])}%"></span>
+              </div>
             <div class="wl">
               <span class="w">{oppZones[`${L}-${R}`].wins} W</span>
               <span class="l">{oppZones[`${L}-${R}`].losses} L</span>
