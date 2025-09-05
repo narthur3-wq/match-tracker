@@ -120,7 +120,7 @@
     for (const e of rows) {
       // ✅ zones relative to the kicker’s direction
       const z = classifyKickoutZoneForSide(
-        e.nx, e.ny, e.side, e.savedOrientationLeft, $orientation_left
+       e.nx, e.ny, e.side, e.savedOrientationLeft, e.savedOrientationLeft
       );
       const cell = m[z.key];
       cell.att += 1;
