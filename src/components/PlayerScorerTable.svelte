@@ -34,21 +34,29 @@
         {#each visible as r (r.player)}
           {@const att = Number(r.att) || 0}
           {@const scores = Number(r.scores ?? r.score) || 0}
-          {@const pct = Number(r.pct) || (att ? Math.round((scores / att) * 100) : 0)}
-          <tr>
-            <td class="label">{r.player === 0 ? 'TBC' : `#${r.player}`}</td>
-                        <td class="num">{att}</td>
+          {@const pct = Number.isFinite(Number(r.pct))
+            ? Math.round(Number(r.pct))
+            : (att ? Math.round((scores / att) * 100) : 0)}
+          {@const g = Number(r.g) || 0}
+          {@const p = Number(r.p) || 0}
+          {@const two = Number(r.two ?? r.t2) || 0}
+          {@const w = Number(r.w ?? r.wide) || 0}
+          {@const s = Number(r.s ?? r.short) || 0}
+          {@const b = Number(r.b ?? r.blocked) || 0}
+          </tr>
+         <td class="label">{r.player === 0 ? 'TBC' : `#${r.player}`}</td>
+            <td class="num">{att}</td>
             <td class="num">{scores}</td>
             <td class="num">{pct}%</td>
           </tr>
           <tr class="breakdown">
             <td colspan="4">
-                          <span>G:{Number(r.g) || 0}</span>
-              <span>P:{Number(r.p) || 0}</span>
-              <span>2P:{Number(r.two ?? r.t2) || 0}</span>
-              <span>W:{Number(r.w ?? r.wide) || 0}</span>
-              <span>S:{Number(r.s ?? r.short) || 0}</span>
-              <span>B:{Number(r.b ?? r.blocked) || 0}</span>
+              <span>G:{g}</span>
+              <span>P:{p}</span>
+              <span>2P:{two}</span>
+              <span>W:{w}</span>
+              <span>S:{s}</span>
+              <span>B:{b}</span>
             </td>
           </tr>
         {/each}
